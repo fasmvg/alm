@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require "alm"
+
+file = ARGV.first
+
+# Post-Processing Verification (PPV)
+unless file
+  puts "[ERROR | PPV] - alm: No files passed"
+  return
+end
+
+file_path = File.expand_path(file, Dir.pwd)
+
+# ADD VERIFICATION PROCESS
+avp_verification = Verifications::AVP.process(file_path)
+
+case avp_verification
+when :AVP_PPR
+  Modules::ADD.start(ARGV)
+when :AVP_NEXIST
+  puts "[ERROR | AVP_NEXIST ] - alm: The file #{file} was NOT found in the current directory"
+when :AVP_NAPPIMG
+  puts "[ERROR | AVP_NAPPIMG] - alm: The passed file is NOT an .AppImage file"
+else
+  puts "[ERROR | AVP_FAILED ] - AVP Verification failed unexpectedly."
+end
