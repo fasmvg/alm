@@ -35,7 +35,6 @@ module Modules
         else
           puts "\e[31m[ERROR | RUNTIME_ERROR] - alm: Failed to move #{file_arg} to #{appimg_path}\e[0m"
         end
-
       rescue Errno::EACCES
         puts "\e[31m[ERROR | PERMISSION] - alm: Permission denied while accessing #{appimg_path}\e[0m"
       rescue => e
@@ -53,12 +52,8 @@ module Modules
       file_path = File.join(appimg_path, File.basename(file_arg))
 
       begin
-        if File.exist?(file_path)
-          File.delete(file_path)
-          puts "\n>>> - alm: #{File.basename(file_arg)} successfully removed from #{appimg_path}\n"
-        else
-          puts "\e[31m[ERROR] - alm: File #{File.basename(file_arg)} not found in #{appimg_path}\e[0m"
-        end
+        File.delete(file_path)
+        puts "\n>>> - alm: #{File.basename(file_arg)} successfully removed from #{appimg_path}\n"
       rescue Errno::EACCES
         puts "\e[31m[ERROR | PERMISSION] - alm: Permission denied while trying to delete #{file_path}\e[0m"
       rescue => e

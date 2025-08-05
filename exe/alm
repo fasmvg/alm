@@ -26,14 +26,14 @@ end
 begin
   parser.parse!
 rescue OptionParser::InvalidOption => e
-  puts "[ERROR | OPT_PARSER] - alm: #{e.message}"
+  puts "\e[31m[ERROR | OPT_PARSER] - alm: #{e.message}\e[0m"
   puts parser
   exit 1
 end
 
 # Post-Processing Verification (PPV)
 unless options[:file]
-  puts "[ERROR | PPV] - alm: No file passed"
+  puts "\e[31m[ERROR | PPV] - alm: No file passed\n\e[0m"
   puts parser
   exit 1
 end
@@ -49,16 +49,25 @@ when :add
   when :AVP_PPR
     Modules::ADD.start([file])
   when :AVP_NEXIST
-    puts "[ERROR | AVP_NEXIST ] - alm: The file #{file} was NOT found in the current directory"
+    puts "\e[31m[ERROR | AVP_NEXIST ] - alm: The file #{file} was NOT found in the current directory\e[0m"
   when :AVP_NAPPIMG
-    puts "[ERROR | AVP_NAPPIMG] - alm: The passed file is NOT an .AppImage file"
+    puts "\e[31m[ERROR | AVP_NAPPIMG] - alm: The passed file is NOT an .AppImage file\e[0m"
   else
-    puts "[ERROR | AVP_FAILED ] - alm: AVP Verification failed unexpectedly."
+    puts "\e[31m[ERROR | AVP_FAILED ] - alm: AVP Verification failed unexpectedly\e[0m"
   end
 when :remove
-  Modules::REMOVE.start([file])
+  # REMOVE VERIFICATION PROCESS
+  rvp_verification = Verifications::RVP.process(file_path)
+  case rvp_verification
+  when :RVP_PPR
+    Modules::REMOVE.start([file])
+  when :RVP_NEXIST
+    puts "\e[31m[ERROR | RVP_NEXIST ] - alm: File #{file} not found in #{file_path}\e[0m"
+  else
+    puts "\e[31m[ERROR | RVP_FAILED ] - alm: RVP Verification failed unexpectedly\e[0m"
+  end
 else
-  puts "[ERROR | CMD] - alm: No valid action (--add or --remove) provided"
+  puts "\e[31m[ERROR | CMD] - alm: No valid action (--add or --remove) provided\e[0m"
   puts parser
   exit 1
 end

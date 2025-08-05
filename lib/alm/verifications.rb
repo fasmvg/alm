@@ -7,4 +7,11 @@ module Verifications
       :AVP_PPR # Add Verification Process (Positive Process Return)
     end
   end
+
+  class RVP
+    def self.process(path)
+      return :RVP_NEXIST unless File.exist?(path)
+      :RVP_PPR # Remove Verification Process (Positive Process Return)
+    end
+  end
 end
