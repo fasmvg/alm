@@ -1,39 +1,47 @@
-# Alm
+# ALM (Appimage Linux Manager)
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/alm`. To experiment with that code, run `bin/console` for an interactive prompt.
+Alm is a lightweight Ruby CLI tool to manage AppImage files easily by adding or removing them from a user-local directory (`~/.local/appimage`). It automates permission granting and file moving without requiring root access, simplifying the handling of AppImages on Linux systems.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
-Install the gem and add to the application's Gemfile by executing:
+You can install the gem from RubyGems after its release by running:
 
 ```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+gem install alm
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Or add it to your application's Gemfile with:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+bundle add alm
 ```
 
 ## Usage
 
-TODO: Write usage instructions here
+The alm command accepts two main flags:
 
-## Development
+- ``--add <file>`` - Adds an AppImage file by moving it to ~/.local/appimage, granting it executable permissions automatically.
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+- ``--remove <file>`` - Removes an AppImage file from the ~/.local/appimage directory.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+## Notes
+
+The tool creates the directory ``~/.local/appimage`` if it doesn't exist.
+
+**No root (sudo) permissions are required** as long as the destination directory is writable by the user.
+
+To run AppImages directly, consider adding ``~/.local/appimage`` to your system PATH:
+
+```bash
+export PATH="$HOME/.local/appimage:$PATH"
+```
+
+Add this line to your shell config (~/.bashrc, ~/.zshrc, etc.) to persist the change.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/alm.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mvguest/alm.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT)
