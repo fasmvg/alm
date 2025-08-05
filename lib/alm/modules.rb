@@ -12,18 +12,18 @@ module Modules
 
       begin
         unless File.directory?(appimg_path)
-          puts "\e[33m- - - - [SUBP] - alm: No appimage directory found\e[0m"
-          puts "\e[33m- - - - [SUBP] - alm: Creating appimage directory on #{appimg_path}...\e[0m"
+          puts "\e[33m - - - [SUBP] - alm: No appimage directory found\e[0m"
+          puts "\e[33m - - - [SUBP] - alm: Creating appimage directory on #{appimg_path}...\e[0m"
           FileUtils.mkdir_p(appimg_path)
-          puts "\e[33m- - - - [SUBP] - alm: Appimage directory created successfully\e[0m"
+          puts "\e[33m - - - [SUBP] - alm: Appimage directory created successfully\e[0m"
         end
 
-        puts ">>> - alm: Adding #{file_arg} to #{dest_path}..."
+        puts "\n>>> - alm: Adding #{file_arg} to #{dest_path}...\n"
 
         unless File.executable?(file_path)
-          puts "\e[33m- - - - [SUBP] - alm: Securing executable permissions for #{file_arg}...\e[0m"
+          puts "\e[33m - - - [SUBP] - alm: Securing executable permissions for #{file_arg}...\e[0m"
           if system("chmod +x '#{file_path}'")
-            puts "\e[32m- - - - [SUBP] - alm: Executable rights granted to #{file_arg}\e[0m"
+            puts "\e[33m - - - [SUBP] - alm: Executable rights granted to #{file_arg}\e[0m"
           else
             puts "\e[31m[ERROR | RUNTIME_ERROR] - alm: Failed to grant executable rights to #{file_arg}\e[0m"
             return
@@ -31,7 +31,7 @@ module Modules
         end
 
         if system("mv '#{file_path}' '#{appimg_path}'")
-          puts "\e[32m>>> - alm: #{file_arg} successfully added to #{appimg_path}\e[0m"
+          puts "\n>>> - alm: #{file_arg} successfully added to #{appimg_path}\n"
         else
           puts "\e[31m[ERROR | RUNTIME_ERROR] - alm: Failed to move #{file_arg} to #{appimg_path}\e[0m"
         end
@@ -55,7 +55,7 @@ module Modules
       begin
         if File.exist?(file_path)
           File.delete(file_path)
-          puts "\e[32m>>> - alm: #{File.basename(file_arg)} successfully removed from #{appimg_path}\e[0m"
+          puts "\n>>> - alm: #{File.basename(file_arg)} successfully removed from #{appimg_path}\n"
         else
           puts "\e[31m[ERROR] - alm: File #{File.basename(file_arg)} not found in #{appimg_path}\e[0m"
         end
