@@ -31,7 +31,7 @@ module Modules
         end
 
         if system("mv '#{file_path}' '#{appimg_path}'")
-          puts ">>> - alm: #{file_arg} successfully added to #{appimg_path}\n"
+          puts ">>> - alm: #{file_arg} successfully added to #{appimg_path} \n\n"
         else
           puts "\e[31m[ERROR | RUNTIME_ERROR] - alm: Failed to move #{file_arg} to #{appimg_path}\e[0m"
         end
@@ -53,7 +53,7 @@ module Modules
 
       begin
         File.delete(file_path)
-        puts "\n>>> - alm: #{File.basename(file_arg)} successfully removed from #{appimg_path}\n"
+        puts "\n>>> - alm: #{File.basename(file_arg)} successfully removed from #{appimg_path} \n\n"
       rescue Errno::EACCES
         puts "\e[31m[ERROR | PERMISSION] - alm: Permission denied while trying to delete #{file_path}\e[0m"
       rescue => e
