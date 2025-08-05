@@ -7,13 +7,13 @@ Alm is a lightweight Ruby CLI tool to manage AppImage files easily by adding or 
 You can install the gem from RubyGems after its release by running:
 
 ```bash
-gem install alm
+gem install alm -v 0.4.0
 ```
 
 Or add it to your application's Gemfile with:
 
 ```bash
-bundle add alm
+bundle add alm --version 0.4.0
 ```
 
 ## Usage
