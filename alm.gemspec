@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Appimage Linux Manager (ALM) is a tool created to manage and run system-wide appimages."
   spec.description = "Appimage Linux Manager (ALM) is a tool created to manage and run system-wide appimages."
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage = "https://github.com/mvguest/alm"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.1.0"
 
