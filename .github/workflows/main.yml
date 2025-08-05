@@ -23,5 +23,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - name: Unfreeze Bundler
+        run: bundle config set frozen false
       - name: Run the default task
         run: bundle exec rake
