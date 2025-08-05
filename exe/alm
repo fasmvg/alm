@@ -1,27 +1,64 @@
 #!/usr/bin/env ruby
 
 require "alm"
+require "optparse"
 
-file = ARGV.first
+options = {}
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: alm --add <file> | --remove <file>"
 
-# Post-Processing Verification (PPV)
-unless file
-  puts "[ERROR | PPV] - alm: No files passed"
-  return
+  opts.on("--add <file>", "Adds and grants permissions to an AppImage file to run system-wide") do |file|
+    options[:action] = :add
+    options[:file] = file
+  end
+
+  opts.on("--remove <file>", "Removes an added AppImage file") do |file|
+    options[:action] = :remove
+    options[:file] = file
+  end
+
+  opts.on("-h", "--help", "Show this help message") do
+    puts opts
+    exit
+  end
 end
 
+begin
+  parser.parse!
+rescue OptionParser::InvalidOption => e
+  puts "[ERROR | OPT_PARSER] - alm: #{e.message}"
+  puts parser
+  exit 1
+end
+
+# Post-Processing Verification (PPV)
+unless options[:file]
+  puts "[ERROR | PPV] - alm: No file passed"
+  puts parser
+  exit 1
+end
+
+file = options[:file]
 file_path = File.expand_path(file, Dir.pwd)
 
-# ADD VERIFICATION PROCESS
-avp_verification = Verifications::AVP.process(file_path)
-
-case avp_verification
-when :AVP_PPR
-  Modules::ADD.start(ARGV)
-when :AVP_NEXIST
-  puts "[ERROR | AVP_NEXIST ] - alm: The file #{file} was NOT found in the current directory"
-when :AVP_NAPPIMG
-  puts "[ERROR | AVP_NAPPIMG] - alm: The passed file is NOT an .AppImage file"
+case options[:action]
+when :add
+  # ADD VERIFICATION PROCESS
+  avp_verification = Verifications::AVP.process(file_path)
+  case avp_verification
+  when :AVP_PPR
+    Modules::ADD.start([file])
+  when :AVP_NEXIST
+    puts "[ERROR | AVP_NEXIST ] - alm: The file #{file} was NOT found in the current directory"
+  when :AVP_NAPPIMG
+    puts "[ERROR | AVP_NAPPIMG] - alm: The passed file is NOT an .AppImage file"
+  else
+    puts "[ERROR | AVP_FAILED ] - alm: AVP Verification failed unexpectedly."
+  end
+when :remove
+  Modules::REMOVE.start([file])
 else
-  puts "[ERROR | AVP_FAILED ] - AVP Verification failed unexpectedly."
+  puts "[ERROR | CMD] - alm: No valid action (--add or --remove) provided"
+  puts parser
+  exit 1
 end
