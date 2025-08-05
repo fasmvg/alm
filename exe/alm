@@ -41,10 +41,12 @@ end
 file = options[:file]
 file_path = File.expand_path(file, Dir.pwd)
 
+appimg_dir = File.expand_path(file, "#{Dir.home}/.local/appimage")
+
 case options[:action]
 when :add
   # ADD VERIFICATION PROCESS
-  avp_verification = Verifications::AVP.process(file_path)
+  avp_verification = Verifications::AVP.process(appimg_dir)
   case avp_verification
   when :AVP_PPR
     Modules::ADD.start([file])
@@ -62,7 +64,7 @@ when :remove
   when :RVP_PPR
     Modules::REMOVE.start([file])
   when :RVP_NEXIST
-    puts "\e[31m[ERROR | RVP_NEXIST ] - alm: File #{file} not found in #{file_path}\e[0m"
+    puts "\e[31m[ERROR | RVP_NEXIST ] - alm: File #{file} not found in the AppImage directory\e[0m"
   else
     puts "\e[31m[ERROR | RVP_FAILED ] - alm: RVP Verification failed unexpectedly\e[0m"
   end
